@@ -1,1 +1,1 @@
-# HeroWithCam
+GalacticWolves HeroWithCam Assignment
