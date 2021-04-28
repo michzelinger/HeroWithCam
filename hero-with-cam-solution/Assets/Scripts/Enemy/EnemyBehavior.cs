@@ -12,9 +12,6 @@ public partial class EnemyBehavior : MonoBehaviour {
     private int mWayPointIndex = 0;
 
     private const float kTurnRate = 0.03f/60f;
-    private int mNumHit = 0;
-    private const int kHitsToDestroy = 4;
-    private const float kEnemyEnergyLost = 0.8f;
 		
 	// Use this for initialization
 	void Start () {
@@ -23,9 +20,13 @@ public partial class EnemyBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-       sWayPoints.CheckNextWayPoint(transform.position, ref mWayPointIndex);
-       PointAtPosition(sWayPoints.WayPoint(mWayPointIndex), kTurnRate);
-       transform.position += (kSpeed * Time.smoothDeltaTime) * transform.up;
+        if (mState == EnemyState.ePatrolState)
+        {
+            sWayPoints.CheckNextWayPoint(transform.position, ref mWayPointIndex);
+            PointAtPosition(sWayPoints.WayPoint(mWayPointIndex), kTurnRate);
+            transform.position += (kSpeed * Time.smoothDeltaTime) * transform.up;
+        }
+        UpdateFSM();
     }
 
     private void PointAtPosition(Vector3 p, float r)
@@ -45,19 +46,28 @@ public partial class EnemyBehavior : MonoBehaviour {
     {
         if (g.name == "Hero")
         {
-            ThisEnemyIsHit();
+            if(mState == EnemyState.eChaseState)
+            {
+                ThisEnemyIsHit();
+            }
+            else if (mState == EnemyState.ePatrolState)
+            {
+                mState = EnemyState.eCCWRotation;
+            }
 
         } else if (g.name == "Egg(Clone)")
         {
-            mNumHit++;
-            if (mNumHit < kHitsToDestroy)
-            {
-                Color c = GetComponent<Renderer>().material.color;
-                c.a = c.a * kEnemyEnergyLost;
-                GetComponent<Renderer>().material.color = c;
-            } else
+            if(mState == EnemyState.eEggState)
             {
                 ThisEnemyIsHit();
+            }
+            else if(mState == EnemyState.eStunnedState)
+            {
+                mState = EnemyState.eEggState;
+            }
+            else
+            {
+                mState = EnemyState.eStunnedState;
             }
         }
     }
