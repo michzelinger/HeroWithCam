@@ -99,6 +99,8 @@ public partial class EnemyBehavior : MonoBehaviour {
         Vector2 currPos = new Vector2(transform.position.x, transform.position.y);
         Vector2 playerPos = new Vector2(player.transform.position.x, player.transform.position.y);
 
+        cameraManager.activateEnemyCam(this, player);
+
         if(Vector2.Distance(playerPos, currPos) <= 40f)
         {
             currPos = Vector2.MoveTowards(currPos, playerPos, kSpeed * Time.deltaTime);

@@ -3,7 +3,6 @@ using System.Collections;
 
 public partial class EnemyBehavior : MonoBehaviour {
 
-   // private EnemyCam eCam = null;
     // All instances of Enemy shares this one WayPoint and EnemySystem
     static private WayPointSystem sWayPoints = null;
     static private EnemySpawnSystem sEnemySystem = null;
@@ -13,10 +12,12 @@ public partial class EnemyBehavior : MonoBehaviour {
     private int mWayPointIndex = 0;
 
     private const float kTurnRate = 0.03f/60f;
+
+    CameraManager cameraManager;
 		
 	// Use this for initialization
 	void Start () {
-       // eCam = FindObjectOfType<EnemyCam>();
+        cameraManager = FindObjectOfType<CameraManager>();
         mWayPointIndex = sWayPoints.GetInitWayIndex();
 	}
 	
@@ -40,7 +41,6 @@ public partial class EnemyBehavior : MonoBehaviour {
     #region Trigger into chase or die
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Debug.Log("Emeny OnTriggerEnter");
         TriggerCheck(collision.gameObject);
     }
 
@@ -55,7 +55,6 @@ public partial class EnemyBehavior : MonoBehaviour {
             else if (mState == EnemyState.ePatrolState)
             {
                 mState = EnemyState.eCCWRotation;
-               // eCam.setCamActive(gameObject.transform); 
             }
 
         } else if (g.name == "Egg(Clone)")
@@ -81,4 +80,9 @@ public partial class EnemyBehavior : MonoBehaviour {
         Destroy(gameObject);
     }
     #endregion
+
+    public bool isChasing()
+    {
+        return mState == EnemyState.eChaseState;
+    }
 }
