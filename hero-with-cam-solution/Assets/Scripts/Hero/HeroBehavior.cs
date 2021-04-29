@@ -9,6 +9,7 @@ public class HeroBehavior : MonoBehaviour {
     private const float kHeroSpeed = 20f;  // 20-units in a second
     private float mHeroSpeed = kHeroSpeed;
     
+    public HeroCamera heroCamera;
     private bool mMouseDrive = true;
     //  Hero state
     private int mHeroTouchedEnemy = 0;
@@ -21,6 +22,7 @@ public class HeroBehavior : MonoBehaviour {
     {
         // Actually since Hero spwans eggs, this can be done in the Start() function, but, 
         // just to show this can also be done here.
+        heroCamera = FindObjectOfType<HeroCamera>() as HeroCamera;
         Debug.Assert(mEggSystem != null);
         EggBehavior.InitializeEggSystem(mEggSystem);
     }
@@ -62,7 +64,10 @@ public class HeroBehavior : MonoBehaviour {
         if (mEggSystem.CanSpawn())
         {
             if (Input.GetKey("space"))
+            {
                 mEggSystem.SpawnAnEgg(transform.position, transform.up);
+                heroCamera.shakeObject(.5f, 1.0f);
+            }
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 
 public partial class EnemyBehavior : MonoBehaviour {
 
+   // private EnemyCam eCam = null;
     // All instances of Enemy shares this one WayPoint and EnemySystem
     static private WayPointSystem sWayPoints = null;
     static private EnemySpawnSystem sEnemySystem = null;
@@ -15,6 +16,7 @@ public partial class EnemyBehavior : MonoBehaviour {
 		
 	// Use this for initialization
 	void Start () {
+       // eCam = FindObjectOfType<EnemyCam>();
         mWayPointIndex = sWayPoints.GetInitWayIndex();
 	}
 	
@@ -53,6 +55,7 @@ public partial class EnemyBehavior : MonoBehaviour {
             else if (mState == EnemyState.ePatrolState)
             {
                 mState = EnemyState.eCCWRotation;
+               // eCam.setCamActive(gameObject.transform); 
             }
 
         } else if (g.name == "Egg(Clone)")

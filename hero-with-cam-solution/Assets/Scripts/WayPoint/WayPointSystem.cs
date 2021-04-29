@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class WayPointSystem : MonoBehaviour
 {
-    private string[] kWayPointNames = {
+    public string[] kWayPointNames = {
             "WayPointA", "WayPointB", "WayPointC",
             "WayPointD", "WayPointE", "WayPointF"};
-    private GameObject[] mWayPoints;
+    public GameObject[] mWayPoints;
     private const int kNumWayPoints = 6;
     private const float kWayPointTouchDistance = 25f;
     private bool mPointsInSequence = true;
