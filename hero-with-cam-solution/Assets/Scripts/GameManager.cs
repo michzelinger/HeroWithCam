@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
+    
     private int heroHitByEnemy = 0;
     private int enemyDiedByEgg = 0;
     public static GameManager sTheGlobalBehavior = null;

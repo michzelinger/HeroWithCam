@@ -4,6 +4,8 @@ using System.Collections;
 
 public partial class EnemyBehavior : MonoBehaviour {
 
+
+    
     private GameManager mGameManager = null;
     // All instances of Enemy shares this one WayPoint and EnemySystem
     static private WayPointSystem sWayPoints = null;
@@ -19,6 +21,8 @@ public partial class EnemyBehavior : MonoBehaviour {
 
     private float lerpDuration = 2.0f;
     private Vector3 pushBackLocation;
+    public float bulletRate = 2.0f;
+    private float bulletTimeStamp;
 		
 	// Use this for initialization
 	void Start () {
@@ -34,6 +38,14 @@ public partial class EnemyBehavior : MonoBehaviour {
             sWayPoints.CheckNextWayPoint(transform.position, ref mWayPointIndex);
             PointAtPosition(sWayPoints.WayPoint(mWayPointIndex), kTurnRate);
             transform.position += (kSpeed * Time.smoothDeltaTime) * transform.up;
+        }
+        if(Time.time >= bulletTimeStamp && mState == EnemyState.eChaseState)
+        {
+            Debug.Log("Bullet Time" + bulletTimeStamp);
+            GameObject b = Instantiate(Resources.Load("Prefabs/PlaneBullet") as GameObject);
+            b.transform.localPosition = transform.localPosition;
+            b.transform.rotation = transform.rotation;
+            bulletTimeStamp = Time.time + bulletRate;
         }
         UpdateFSM();
     }

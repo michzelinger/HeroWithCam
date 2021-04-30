@@ -4,6 +4,10 @@ using System.Collections;
 
 public class HeroBehavior : MonoBehaviour {
     
+    public Restart restartButton;
+    public Text mTimeSurvivedText = null;
+    public int maxHealth = 100;
+    public int heroHealth;
     public EggSpawnSystem mEggSystem = null;
     //public Text controlsHero = null;
     private const float kHeroRotateSpeed = 90f/2f; // 90-degrees in 2 seconds
@@ -23,9 +27,11 @@ public class HeroBehavior : MonoBehaviour {
     {
         // Actually since Hero spwans eggs, this can be done in the Start() function, but, 
         // just to show this can also be done here.
+        restartButton = FindObjectOfType<Restart>() as Restart;
         heroCamera = FindObjectOfType<HeroCamera>() as HeroCamera;
         Debug.Assert(mEggSystem != null);
         EggBehavior.InitializeEggSystem(mEggSystem);
+        heroHealth = maxHealth;
     }
 
     void Start ()
@@ -72,6 +78,21 @@ public class HeroBehavior : MonoBehaviour {
                 mEggSystem.SpawnAnEgg(transform.position, transform.up);
                 heroCamera.shakeObject(.5f, 1.0f);
             }
+        }
+    }
+
+    public void DamageHero(int damage)
+    {
+        heroHealth -= damage;
+        Debug.Log("Hero Health: " + heroHealth);
+        if(heroHealth == 0)
+        {
+            //Destroy(gameObject);
+            var _time = (int)Time.time;
+            GameObject.Find ("Hero").transform.localScale = new Vector3(0, 0, 0);
+            GameObject.Find("RestartButton").transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            mTimeSurvivedText.text = "Time Survived: " + _time + " Seconds";
+            Time.timeScale = 0;
         }
     }
 
