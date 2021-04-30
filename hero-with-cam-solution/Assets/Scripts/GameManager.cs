@@ -3,8 +3,12 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
-    public static GameManager sTheGlobalBehavior = null;
 
+    private int heroHitByEnemy = 0;
+    private int enemyDiedByEgg = 0;
+    public static GameManager sTheGlobalBehavior = null;
+    public Text mEnemiesDestroyedText = null;
+    public Text mHeroHitText = null;
     public Text mGameStateEcho = null;  // Defined in UnityEngine.UI
     public HeroBehavior mHero = null;
     public WayPointSystem mWayPoints = null;
@@ -43,6 +47,7 @@ public class GameManager : MonoBehaviour {
     void FixedUpdate()
     {
         totalEnemy.text = "Total Enemies: " + FindObjectsOfType<EnemyBehavior>().Length;
+        //mEnemiesDestroyedText.text = "Enemies Destroyed: " + FindObjectsOfType<EnemyBehavior>(enemiesDestroyed);
     }
 
 
@@ -55,5 +60,18 @@ public class GameManager : MonoBehaviour {
         mGameStateEcho.text =  mWayPoints.GetWayPointState() + "  " + 
                                mHero.GetHeroState() + "  " + 
                                mEnemySystem.GetEnemyState();
+    }
+
+    public void EnemyDiedByEgg()
+    {
+        enemyDiedByEgg++;
+        mEnemiesDestroyedText.text = "Enemies Destroyed: " + enemyDiedByEgg;
+    }
+
+    public void HeroHitByEnemy()
+    {
+        Debug.Log("got here");
+        heroHitByEnemy++;
+        mHeroHitText.text = "Hero Hit: " + heroHitByEnemy; 
     }
 }

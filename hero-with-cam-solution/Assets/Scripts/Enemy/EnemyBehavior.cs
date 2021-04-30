@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public partial class EnemyBehavior : MonoBehaviour {
 
+    private GameManager mGameManager = null;
     // All instances of Enemy shares this one WayPoint and EnemySystem
     static private WayPointSystem sWayPoints = null;
     static private EnemySpawnSystem sEnemySystem = null;
@@ -22,6 +24,7 @@ public partial class EnemyBehavior : MonoBehaviour {
 	void Start () {
         cameraManager = FindObjectOfType<CameraManager>();
         mWayPointIndex = sWayPoints.GetInitWayIndex();
+        mGameManager = FindObjectOfType<GameManager>();
 	}
 	
 	// Update is called once per frame
@@ -64,6 +67,7 @@ public partial class EnemyBehavior : MonoBehaviour {
         {
             if(mState == EnemyState.eChaseState)
             {
+                mGameManager.HeroHitByEnemy();
                 ThisEnemyIsHit();
             }
             else if (mState == EnemyState.ePatrolState)
@@ -79,7 +83,9 @@ public partial class EnemyBehavior : MonoBehaviour {
         {
             if(mState == EnemyState.eEggState) // Egg state
             {
+                
                 ThisEnemyIsHit();
+                mGameManager.EnemyDiedByEgg();
             }
             else if(mState == EnemyState.eStunnedState) // Stunned state
             {
