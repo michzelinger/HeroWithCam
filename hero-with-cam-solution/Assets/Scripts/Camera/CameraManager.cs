@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraManager : MonoBehaviour
 {
     public GameObject enemyCam;
     public GameObject waypointCam;
 
+    public Text enemyCamStaus;
+    public Text waypointCamStatus;
 
     // Variables for Enemy Cam
     EnemyBehavior enemy;
@@ -34,11 +37,13 @@ public class CameraManager : MonoBehaviour
         else
         {
             enemyCam.SetActive(false);
+            enemyCamStaus.text = "Enemy Cam: Disabled";
         }
     }
 
     public void activateEnemyCam(EnemyBehavior enemy, HeroBehavior player)
     {
+        enemyCamStaus.text = "Enemy Cam: Enabled";
         this.enemy = enemy;
         this.player = player;
         enemyCam.SetActive(true);
@@ -54,8 +59,10 @@ public class CameraManager : MonoBehaviour
 
     IEnumerator focusWaypointCam(float duration)
     {
+        waypointCamStatus.text = "Waypoint Cam: Enabled";
         waypointCam.SetActive(true);
         yield return new WaitForSeconds(duration);
         waypointCam.SetActive(false);
+        waypointCamStatus.text = "Waypoint Cam: Disabled";
     }
 }

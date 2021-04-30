@@ -5,6 +5,7 @@ using System.Collections;
 public class HeroBehavior : MonoBehaviour {
     
     public EggSpawnSystem mEggSystem = null;
+    //public Text controlsHero = null;
     private const float kHeroRotateSpeed = 90f/2f; // 90-degrees in 2 seconds
     private const float kHeroSpeed = 20f;  // 20-units in a second
     private float mHeroSpeed = kHeroSpeed;
@@ -52,10 +53,13 @@ public class HeroBehavior : MonoBehaviour {
             Vector3 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             p.z = 0f;
             transform.position = p;
+            //controlsHero.text = "Controls: Mouse";
+
         } else
         {
             mHeroSpeed += Input.GetAxis("Vertical");
             transform.position += transform.up * (mHeroSpeed * Time.smoothDeltaTime);
+            //controlsHero.text = "Controls: Keyboard";
         }
     }
 

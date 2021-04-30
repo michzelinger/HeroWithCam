@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
     private EnemySpawnSystem mEnemySystem = null;
 
     private CameraSupport mMainCamera;
+
+    public Text totalEnemy = null;
     
     // Use this for initialization
     void Start () {
@@ -36,6 +38,11 @@ public class GameManager : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Q))
             Application.Quit();
+    }
+
+    void FixedUpdate()
+    {
+        totalEnemy.text = "Total Enemies: " + FindObjectsOfType<EnemyBehavior>().Length;
     }
 
 

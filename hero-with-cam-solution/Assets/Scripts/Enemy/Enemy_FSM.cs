@@ -166,7 +166,7 @@ public partial class EnemyBehavior : MonoBehaviour {
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Textures/shuriken") as Sprite;
         
         Vector3 angles = transform.rotation.eulerAngles;
-        angles.z -= 720f / 90f;
+        angles.z -= 45f / 90f;
         transform.rotation = Quaternion.Euler(0, 0, angles.z);
 
 

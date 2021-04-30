@@ -22,7 +22,8 @@ public class WayPoint : MonoBehaviour
 
    private void Reposition()
    {
-       Debug.Log("Reposition");
+      StopAllCoroutines();
+      Debug.Log("Reposition");
       Vector3 p = mInitPosition;
       p += new Vector3(Random.Range(-kRepositionRange, kRepositionRange),
                        Random.Range(-kRepositionRange, kRepositionRange),

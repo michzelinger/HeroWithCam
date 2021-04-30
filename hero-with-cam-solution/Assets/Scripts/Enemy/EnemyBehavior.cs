@@ -8,12 +8,15 @@ public partial class EnemyBehavior : MonoBehaviour {
     static private EnemySpawnSystem sEnemySystem = null;
     static public void InitializeEnemySystem(EnemySpawnSystem s, WayPointSystem w) { sEnemySystem = s; sWayPoints = w; }
 
-    private const float kSpeed = 20f;
+    private const float kSpeed = 5.0f;
     private int mWayPointIndex = 0;
 
     private const float kTurnRate = 0.03f/60f;
 
     CameraManager cameraManager;
+
+    private float lerpDuration = 2.0f;
+    private Vector3 pushBackLocation;
 		
 	// Use this for initialization
 	void Start () {
@@ -32,6 +35,22 @@ public partial class EnemyBehavior : MonoBehaviour {
         UpdateFSM();
     }
 
+    IEnumerator Lerp()
+    {
+        float timeElapsed = 0f;
+        Vector3 originalPos = transform.position;
+
+        while (timeElapsed < lerpDuration)
+        {
+            transform.position = Vector3.Lerp(originalPos, pushBackLocation, (timeElapsed / lerpDuration));
+            timeElapsed += Time.smoothDeltaTime;
+
+            yield return null;
+        }
+
+        transform.position = pushBackLocation;
+    }
+
     private void PointAtPosition(Vector3 p, float r)
     {
         Vector3 v = p - transform.position;
@@ -39,14 +58,9 @@ public partial class EnemyBehavior : MonoBehaviour {
     }
 
     #region Trigger into chase or die
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        TriggerCheck(collision.gameObject);
-    }
-
-    private void TriggerCheck(GameObject g)
-    {
-        if (g.name == "Hero")
+        if (collision.gameObject.name == "Hero")
         {
             if(mState == EnemyState.eChaseState)
             {
@@ -56,22 +70,35 @@ public partial class EnemyBehavior : MonoBehaviour {
             {
                 mState = EnemyState.eCCWRotation;
             }
+        }
+    }
 
-        } else if (g.name == "Egg(Clone)")
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Egg(Clone)")
         {
-            if(mState == EnemyState.eEggState)
+            if(mState == EnemyState.eEggState) // Egg state
             {
                 ThisEnemyIsHit();
             }
-            else if(mState == EnemyState.eStunnedState)
+            else if(mState == EnemyState.eStunnedState) // Stunned state
             {
+                PushBack(8.0f, collision.transform.up);
                 mState = EnemyState.eEggState;
             }
-            else
+            else // Patrol state
             {
+                PushBack(4.0f, collision.transform.up);
                 mState = EnemyState.eStunnedState;
             }
         }
+    }
+
+    private void PushBack(float distance, Vector3 direction)
+    {
+        StopAllCoroutines();
+        pushBackLocation = transform.position + direction * distance;
+        StartCoroutine(Lerp());
     }
 
     private void ThisEnemyIsHit()

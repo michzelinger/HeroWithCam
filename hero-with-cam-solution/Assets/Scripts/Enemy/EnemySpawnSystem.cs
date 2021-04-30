@@ -13,8 +13,10 @@ public class EnemySpawnSystem
 
     private int mEnemyDestroyed = 0;
 
+
     public EnemySpawnSystem(Vector2 min, Vector2 max)
     {
+
         mEnemyTemplate = Resources.Load<GameObject>("Prefabs/Enemy") as GameObject;
         mSpawnRegionMin = min;
         mSpawnRegionMax = max;
