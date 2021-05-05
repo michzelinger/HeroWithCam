@@ -6,8 +6,9 @@ public class HeroBehavior : MonoBehaviour {
     
     public Restart restartButton;
     public Text mTimeSurvivedText = null;
-    public int maxHealth = 100;
-    public int heroHealth;
+    public float maxHealth = 100f;
+    public float heroHealth;
+    public HealthBarBehavior healthBar;
     public EggSpawnSystem mEggSystem = null;
     //public Text controlsHero = null;
     private const float kHeroRotateSpeed = 90f/2f; // 90-degrees in 2 seconds
@@ -32,6 +33,7 @@ public class HeroBehavior : MonoBehaviour {
         Debug.Assert(mEggSystem != null);
         EggBehavior.InitializeEggSystem(mEggSystem);
         heroHealth = maxHealth;
+        healthBar.SetHealth(heroHealth, maxHealth);
     }
 
     void Start ()
@@ -81,9 +83,10 @@ public class HeroBehavior : MonoBehaviour {
         }
     }
 
-    public void DamageHero(int damage)
+    public void DamageHero(float damage)
     {
         heroHealth -= damage;
+        healthBar.SetHealth(heroHealth, maxHealth);
         Debug.Log("Hero Health: " + heroHealth);
         if(heroHealth == 0)
         {

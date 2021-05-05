@@ -57,13 +57,17 @@ public partial class EnemyBehavior : MonoBehaviour {
 
         while (timeElapsed < lerpDuration)
         {
-            transform.position = Vector3.Lerp(originalPos, pushBackLocation, (timeElapsed / lerpDuration));
+            transform.position = Vector3.Lerp(originalPos, pushBackLocation, EaseOut(timeElapsed / lerpDuration));
             timeElapsed += Time.smoothDeltaTime;
 
             yield return null;
         }
 
         transform.position = pushBackLocation;
+    }
+    private float EaseOut(float x)
+    {
+        return 1 -((1-x)*(1-x));
     }
 
     private void PointAtPosition(Vector3 p, float r)
